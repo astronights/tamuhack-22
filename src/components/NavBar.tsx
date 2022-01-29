@@ -1,7 +1,7 @@
 import { AppBar, Toolbar } from "@mui/material";
 import React from "react";
 import { NavLink } from "react-router-dom";
-// import "../assets/css/Component.scss";
+import "../assets/css/Component.scss";
 
 const NavBar = () => {
   return (
@@ -11,15 +11,18 @@ const NavBar = () => {
       position="sticky"
     >
       <Toolbar>
-        <NavLink className="app-name nav-link" to="/home">
-          <span className="full-text">TAMUHack Project</span>
-          <span className="short-text">TAMUHack</span>
+        <NavLink
+          className="app-name nav-link"
+          //   activeClassName="active-nav"
+          to="/home"
+        >
+          TAMUHack Project 1
         </NavLink>
         {/* <NavLink className="nav-link" to="/home">
           Home
         </NavLink> */}
         <NavLink className="nav-link" to="/about">
-          About
+          Login
         </NavLink>
       </Toolbar>
     </AppBar>

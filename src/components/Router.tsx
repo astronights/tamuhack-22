@@ -1,5 +1,5 @@
 import React from "react";
-// import Home from "./Home/Home";
+import Home from "./Home/Home";
 import About from "./About";
 import { Route, Routes } from "react-router-dom";
 
@@ -7,7 +7,7 @@ const Router: React.FC = () => {
   return (
     <Routes>
       <Route path="/about" element={<About />} />
-      {/* <Route path="/home" element={About} /> */}
+      <Route path="/home" element={<Home />} />
     </Routes>
   );
 };
