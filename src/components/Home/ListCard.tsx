@@ -3,7 +3,7 @@ import { getServices } from "../../api/service";
 import { service } from "../../types/service";
 import { subscription } from "../../types/subscription";
 import Card from "@mui/material/Card";
-import { CardContent } from "@mui/material";
+import { CardContent, Dialog } from "@mui/material";
 import "../../assets/css/Component.scss";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,6 +12,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Button from "@material-ui/core/Button";
 
 interface ListCardProps {
   subscriptions: subscription[];
@@ -27,15 +28,15 @@ const ListCard = (props: ListCardProps) => {
     getServices().then((serviceResponse: service[]) =>
       setServices(serviceResponse)
     );
-  });
+  }, []);
   return (
     <Card
       style={{
         width: "100%",
         height: "100%",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        // alignItems: "center",
+        // justifyContent: "center",
       }}
     >
       <CardContent>
@@ -43,22 +44,39 @@ const ListCard = (props: ListCardProps) => {
           <Table aria-label="simple table" stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell>Subscription</TableCell>
-                <TableCell>Last Used</TableCell>
-                <TableCell>Renewal Date</TableCell>
-                <TableCell>Fee</TableCell>
+                <TableCell style={{ width: "10vw" }}>Subscription</TableCell>
+                <TableCell style={{ width: "10vw" }}>Last Used</TableCell>
+                <TableCell style={{ width: "10vw" }}>Renewal Date</TableCell>
+                <TableCell style={{ width: "10vw" }}>Fee</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.subscriptions
-                .sort((s1, s2) => (s1.renewalDate < s2.renewalDate ? -1 : 1))
+              {subscriptionList
+                .sort((s1, s2) =>
+                  s1.subscriptionDate < s2.subscriptionDate ? -1 : 1
+                )
                 .map((sub) => {
                   return (
-                    <TableRow key={sub.serviceName}>
-                      <TableCell>{sub.serviceName}</TableCell>
-                      <TableCell>{sub.lastUsed}</TableCell>
-                      <TableCell>{sub.renewalDate}</TableCell>
-                      <TableCell>{sub.fee}</TableCell>
+                    <TableRow key={sub.service_id}>
+                      <TableCell style={{ width: "10vw" }}>
+                        <img
+                          src={
+                            services.filter(
+                              (x) =>
+                                x.name.toUpperCase() ===
+                                sub.service_id.toUpperCase()
+                            )[0].logourl
+                          }
+                          alt={sub.service_id}
+                        />
+                      </TableCell>
+                      <TableCell style={{ width: "10vw" }}>
+                        {sub.timestamp.toLocaleString()}
+                      </TableCell>
+                      <TableCell style={{ width: "10vw" }}>
+                        {sub.subscriptionDate.toLocaleString()}
+                      </TableCell>
+                      <TableCell style={{ width: "10vw" }}>{sub.fee}</TableCell>
                     </TableRow>
                   );
                 })}

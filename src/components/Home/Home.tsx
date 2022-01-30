@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { layouts } from "./layouts";
 import { calendarDate } from "../../types/calendarDate";
-import { getSubscriptions } from "../../api/subscription";
+import { getUser } from "../../api/user";
 import {
   Responsive as ResponsiveGridLayout,
   WidthProvider,
@@ -11,6 +11,7 @@ import { subscription } from "../../types/subscription";
 import CalendarCard from "./CalendarCard";
 import { service } from "../../types/service";
 import ListCard from "./ListCard";
+import { getServices } from "../../api/service";
 const ResponsiveReactGridLayout = WidthProvider(ResponsiveGridLayout);
 
 const services: service[] = [];
@@ -21,7 +22,8 @@ const subscriptions: subscription[] = [];
 
 const curUser: user = {
   displayName: "User",
-  auth: "auth",
+  user_id: "u1",
+  password: "password",
   subscriptions: [],
   contacts: [],
 };
@@ -33,20 +35,34 @@ const Home = () => {
     useState(subscriptions);
 
   const getSubscriptionRenewalDates = (
-    data: subscription[]
+    serviceData: service[],
+    subsData: subscription[]
   ): calendarDate[] => {
-    return data.map((sub) => ({
-      year: sub.renewalDate.getFullYear(),
-      month: sub.renewalDate.getMonth(),
-      day: sub.renewalDate.getDate(),
-      className: sub.category || "",
+    return subsData.map((sub) => ({
+      year: new Date(sub.subscriptionDate).getFullYear(),
+      month: new Date(sub.subscriptionDate).getMonth(),
+      day: new Date(sub.subscriptionDate).getDate(),
+      className: serviceData.filter(
+        (x) => x.name.toUpperCase() === sub.service_id.toUpperCase()
+      )[0].category,
     }));
   };
 
   useEffect(() => {
-    getSubscriptions(curUser.displayName).then((data: subscription[]) =>
-      setCalendarDates(getSubscriptionRenewalDates(data))
-    );
+    getUser(curUser.user_id)
+      .then(async (data: user) => {
+        setServiceList(await getServices());
+        return { serviceList: serviceList, subscriptions: data.subscriptions };
+      })
+      .then((jsonData) => {
+        setServiceSubscriptions(jsonData.subscriptions);
+        setCalendarDates(
+          getSubscriptionRenewalDates(
+            jsonData.serviceList,
+            jsonData.subscriptions
+          )
+        );
+      });
   }, []);
 
   return (
@@ -59,13 +75,15 @@ const Home = () => {
         rowHeight={100}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-      ></ResponsiveReactGridLayout>
-      <div key="calendar">
-        <CalendarCard susbcriptionDates={calendarDates} />
-      </div>
-      <div key="list">
-        <ListCard subscriptions={serviceSubscriptions} />
-      </div>
+      >
+        <div key="calendar" className="home-card">
+          {console.log(calendarDates)}
+          <CalendarCard susbcriptionDates={calendarDates} />
+        </div>
+        <div key="list" className="home-card">
+          <ListCard subscriptions={serviceSubscriptions} />
+        </div>
+      </ResponsiveReactGridLayout>
     </React.Fragment>
   );
 };

@@ -1,7 +1,6 @@
 export type subscription = {
-  serviceName: string;
+  service_id: string;
   fee: number;
-  lastUsed: Date;
-  renewalDate: Date;
-  category?: string;
+  timestamp: Date; //Last Used
+  subscriptionDate: Date;
 };

@@ -5,7 +5,7 @@ import { AxiosResponse } from "axios";
 export const getServices = async (): Promise<service[]> => {
   const response: AxiosResponse = await request(
     "GET",
-    "/service/all",
+    "/getService",
     null,
     null
   );

@@ -5,6 +5,8 @@ import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { Calendar } from "react-modern-calendar-datepicker";
 import { CardContent } from "@mui/material";
 import "../../assets/css/Component.scss";
+import { service } from "../../types/service";
+import { getServices } from "../../api/service";
 
 const today: calendarDate = {
   year: new Date().getFullYear(),
@@ -20,6 +22,9 @@ interface CalendarCardProps {
 const CalendarCard = (props: CalendarCardProps) => {
   const [todayDay, setTodayDay] = useState(today);
   const [serviceDates, setServiceDates] = useState(props.susbcriptionDates);
+
+  console.log(serviceDates);
+
   return (
     <Card
       style={{

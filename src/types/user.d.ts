@@ -1,7 +1,13 @@
 import { subscription } from "./subscription";
+
+export type contact = {
+  id: string;
+};
+
 export type user = {
   displayName: string;
-  auth: string;
+  user_id: string;
+  password: string;
   subscriptions: subscription[];
-  contacts: string[];
+  contacts: contact[];
 };

@@ -14,7 +14,7 @@ const NavBar = () => {
         <NavLink
           className="app-name nav-link"
           //   activeClassName="active-nav"
-          to="/home"
+          to="/"
         >
           TAMUHack Project 1
         </NavLink>
